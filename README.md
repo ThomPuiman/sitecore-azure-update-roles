@@ -20,11 +20,19 @@ The ServiceConfigurations need to be updated with the correct Azure SQL Server n
 ## Parameters
 
 **$csNameCD** - The name of the cloud service for the Content Delivery (which already needs to be created before executing this script)
+
 **$csNameCE** - The name of the cloud service for the Content Management
+
 **$configDir** - The full path of the folder containing the ServiceDefinitions and ServiceConfigurations
+
 **$applicationDir** - The full path of the folder containing your published Visual Studio solution
+
 **$subscription** - The name of your Azure subscription (which needs to be in the Azure.publishsettings file)
+
 **$storageAccount** - The name of the Azure Blob Storage account (hardcoded name of the container is 'sitecore', you can also change it in the script to point it at a different container)
+
 **$storageKey** - The access key of the given storage account
+
 **$slot (optional)** - Either "Production" or "Staging"
+
 **$deploymentLabel (optional)** - Display name of your deployment in the Azure portal

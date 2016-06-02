@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="SitecoreCloudService" schemaVersion="2014-06.2.4" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+  <WebRole name="SitecoreWebRole" enableNativeCodeExecution="false" vmsize="Medium">
+    <Imports>
+      <Import moduleName="Caching" />	
+    </Imports>
+    <Startup>
+      <Task commandLine="Startup.cmd" executionContext="elevated">
+        <Environment>
+          <Variable name="ComputeEmulatorRunning">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+        </Environment>
+      </Task>
+      <Task commandLine="BootstrapperCD.bat" executionContext="elevated" />
+    </Startup>
+    <LocalResources>
+      <LocalStorage name="DiagnosticStore" sizeInMB="10240" cleanOnRoleRecycle="false" />
+      <LocalStorage name="SitecoreWebSite" sizeInMB="10240" cleanOnRoleRecycle="false" />
+    </LocalResources>
+    <ConfigurationSettings>
+      <Setting name="Sitecore.Azure.ServiceRuntime.WarmupTimeout" />
+      <Setting name="SqlServerName" />
+      <Setting name="StorageName" />
+    </ConfigurationSettings>
+    <Endpoints>
+      <InputEndpoint name="HttpIn" protocol="http" port="80" />
+    </Endpoints>
+    <Sites>
+      <Site name="SitecoreWebSite" physicalDirectory=".\_PackagingCD">
+        <Bindings>
+          <Binding name="HttpIn" endpointName="HttpIn" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Runtime executionContext="elevated">
+      <EntryPoint>
+        <NetFxEntryPoint assemblyName="Sitecore.Azure.WebRole.dll" targetFrameworkVersion="v4.5" />
+      </EntryPoint>
+    </Runtime>
+  </WebRole>
+</ServiceDefinition>
